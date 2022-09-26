@@ -1,0 +1,28 @@
+units           real
+atom_style      atomic
+
+
+read_data       ar.data
+
+velocity        all create 1.0 87287
+
+pair_style      lj/cut 3.5
+pair_coeff      1 1 0.02166 2.64 3.5
+
+neighbor        0.3 bin
+neigh_modify    every 20 delay 0 check no
+
+fix             1 all npt temp 298.0 298.0 200.0 iso 5 5 100.0
+
+
+
+
+timestep        0.25
+
+thermo          100
+thermo_style    custom step pe ke etotal temp press vol density
+thermo_modify   format float %15.14g
+
+dump             1 all custom 500 dump.ar id type x y z
+
+run             500000
